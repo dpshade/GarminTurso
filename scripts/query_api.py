@@ -15,10 +15,10 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).parent / "src"))
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from database import TursoDatabase
-from report_generator import HealthReportGenerator
+from src.core import TursoDatabase
+from src.utils import HealthReportGenerator
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)

@@ -9,9 +9,9 @@ import logging
 from datetime import datetime, timedelta
 from typing import Optional
 
-from auth import GarminAuthenticator
-from database import TursoDatabase
-from garmin_collector import GarminCollector
+from .auth import GarminAuthenticator
+from .database import TursoDatabase
+from ..collectors.garmin_collector import GarminCollector
 
 logger = logging.getLogger(__name__)
 

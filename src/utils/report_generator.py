@@ -14,9 +14,9 @@ import weasyprint
 from io import BytesIO
 import base64
 
-from database import TursoDatabase
-from data_processor import DataProcessor
-from charts.core_vitals import CoreVitalsCharts
+from ..core.database import TursoDatabase
+from .data_processor import DataProcessor
+from .charts.core_vitals import CoreVitalsCharts
 
 logger = logging.getLogger(__name__)
 

@@ -18,10 +18,8 @@ from dotenv import load_dotenv
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from auth import GarminAuthenticator
-from database import TursoDatabase
-from garmin_collector import GarminCollector
-from sync_service import GarminSyncService
+from src.core import GarminAuthenticator, TursoDatabase, GarminSyncService
+from src.collectors import GarminCollector
 
 # Load environment variables
 load_dotenv()

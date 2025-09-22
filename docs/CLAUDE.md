@@ -27,36 +27,34 @@ python main.py --mode bulk --days 30
 python main.py --mode sync --sync-interval 300
 
 # Dedicated sync service (recommended for continuous operation)
-python sync.py --mode continuous --interval 300
-python sync.py --mode single  # One-time sync check
-
-# Test database functionality
-python test_final.py
+python scripts/sync.py --mode continuous --interval 300
+python scripts/sync.py --mode single  # One-time sync check
 
 # Generate reports
-python generate_report.py
+python scripts/generate_report.py
 ```
 
 ### API Services
 ```bash
 # Start REST API server
-python query_api.py
+python scripts/query_api.py
 # Access at http://localhost:8000, docs at http://localhost:8000/docs
 
 # Start MCP server (for AI integrations)
-python mcp_server.py
+python scripts/mcp_server.py
 ```
 
 ### Testing and Reports
 ```bash
 # Run comprehensive tests
-python test_reports.py
+python tests/test_final.py
+python tests/test_reports.py
 
 # Test MCP functionality
-./test_mcp.sh
+./tests/test_mcp.sh
 
 # Setup MCP integration
-./setup_mcp.sh
+./scripts/setup_mcp.sh
 ```
 
 ## Architecture
@@ -65,22 +63,22 @@ python test_reports.py
 
 **Data Collection Pipeline:**
 - `main.py` - Entry point supporting both bulk and continuous sync modes
-- `sync.py` - Dedicated continuous sync service (recommended for automation)
-- `src/auth.py` - GarminAuthenticator using production-tested garmin_login() approach
-- `src/garmin_collector.py` - Main collector combining enhanced APIs, intraday data, and FIT processing
-- `src/sync_service.py` - Continuous sync service with automatic data detection
-- `src/enhanced_collector.py` - Enhanced API data collection (15/16 endpoints working)
-- `src/intraday_collector.py` - High-resolution timestamped data extraction
-- `src/fit_processor.py` - GPS coordinates and activity details from GPX exports
+- `scripts/sync.py` - Dedicated continuous sync service (recommended for automation)
+- `src/core/auth.py` - GarminAuthenticator using production-tested garmin_login() approach
+- `src/collectors/garmin_collector.py` - Main collector combining enhanced APIs, intraday data, and FIT processing
+- `src/core/sync_service.py` - Continuous sync service with automatic data detection
+- `src/collectors/enhanced_collector.py` - Enhanced API data collection (15/16 endpoints working)
+- `src/collectors/intraday_collector.py` - High-resolution timestamped data extraction
+- `src/collectors/fit_processor.py` - GPS coordinates and activity details from GPX exports
 
 **Data Storage:**
-- `src/database.py` - TursoDatabase class managing SQLite/Turso operations
-- `src/data_processor.py` - Data transformation and validation utilities
+- `src/core/database.py` - TursoDatabase class managing SQLite/Turso operations
+- `src/utils/data_processor.py` - Data transformation and validation utilities
 
 **Data Access:**
-- `query_api.py` - FastAPI REST interface with 25+ endpoints
-- `mcp_server.py` - Model Context Protocol server for AI integrations
-- `src/report_generator.py` - Chart and report generation using matplotlib/plotly
+- `scripts/query_api.py` - FastAPI REST interface with 25+ endpoints
+- `scripts/mcp_server.py` - Model Context Protocol server for AI integrations
+- `src/utils/report_generator.py` - Chart and report generation using matplotlib/plotly
 
 ### Database Schema
 10 specialized tables storing comprehensive health data:

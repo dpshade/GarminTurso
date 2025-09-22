@@ -14,10 +14,9 @@ from rich.panel import Panel
 from dotenv import load_dotenv
 
 # Add src to path
-sys.path.insert(0, str(Path(__file__).parent / "src"))
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from database import TursoDatabase
-from sync_service import GarminSyncService
+from src.core import TursoDatabase, GarminSyncService
 
 # Load environment variables
 load_dotenv()

@@ -7,7 +7,7 @@ import pandas as pd
 import logging
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple, Any
-from database import TursoDatabase
+from ..core.database import TursoDatabase
 
 logger = logging.getLogger(__name__)
 

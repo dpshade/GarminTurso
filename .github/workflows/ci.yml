@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.10, 3.11, 3.12]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install UV
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+    - name: Install dependencies
+      run: |
+        uv sync
+
+    - name: Create test environment
+      run: |
+        mkdir -p data logs
+        cp .env.example .env.test
+
+    - name: Run basic tests
+      env:
+        GARMIN_EMAIL: test@example.com
+        GARMIN_PASSWORD: testpassword
+        TURSO_DB_PATH: ./data/test.db
+      run: |
+        # Test database creation and basic functionality
+        python -c "
+        import sys
+        sys.path.insert(0, 'src')
+        from database import TursoDatabase
+        db = TursoDatabase('./data/test.db')
+        db.connect()
+        db.create_schema()
+        print('Database schema created successfully')
+        "
+
+    - name: Test imports
+      run: |
+        python -c "
+        import sys
+        sys.path.insert(0, 'src')
+        from auth import GarminAuthenticator
+        from database import TursoDatabase
+        from garmin_collector import GarminCollector
+        from sync_service import GarminSyncService
+        print('All imports successful')
+        "
+
+    - name: Run linting (if available)
+      run: |
+        if [ -f "requirements-dev.txt" ]; then
+          pip install -r requirements-dev.txt
+          flake8 src/ --max-line-length=120 || true
+        fi
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Run security scan
+      uses: PyCQA/bandit-action@v1
+      with:
+        path: "src/"
+        level: "high"
+        confidence: "high"

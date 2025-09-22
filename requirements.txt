@@ -1,0 +1,13 @@
+# Core dependencies
+libsql-experimental>=0.0.34
+garminconnect>=0.2.19
+garth>=0.4.46
+
+# Utilities
+schedule>=1.2.2
+python-dotenv>=1.0.1
+rich>=13.9.4
+
+# API server
+fastapi>=0.115.5
+uvicorn>=0.32.1
